@@ -1,12 +1,7 @@
 import { Component, ViewChild } from '@angular/core'
 import { NgForm } from '@angular/forms'
 
-import { IFlash } from './flash.model'
-
-// tslint:disable-next-line: typedef
-function getRandomNumber() {
-  return Math.floor(Math.random() * 1000)
-}
+import { FlashService } from './flash.service'
 
 @Component({
   selector: 'app-root',
@@ -21,57 +16,27 @@ export class AppComponent {
     question: '',
     answer: '',
   }
-  flashes: IFlash[] = [
-    {
-      question: 'Question 1',
-      answer: 'Answer 1',
-      show: false,
-      id: getRandomNumber(),
-    },
-    {
-      question: 'Question 2',
-      answer: 'Answer 2',
-      show: false,
-      id: getRandomNumber(),
-    },
-    {
-      question: 'Question 3',
-      answer: 'Answer 4',
-      show: false,
-      id: getRandomNumber(),
-    },
-    {
-      question: 'Question 4',
-      answer: 'Answer 4',
-      show: false,
-      id: getRandomNumber(),
-    },
-  ]
-  handle
+  flashes
 
   // tslint:disable-next-line: typedef
   trackFlashById(flash) {
     return flash.id
   }
+
   // tslint:disable-next-line: typedef
   handleToggleCard(id: number) {
-    // tslint:disable-next-line: no-shadowed-variable
-    const flash = this.flashes.find((flash) => Object.is(flash.id, id))
-    flash.show = !flash.show
+    this.FS.toggleFlash(id)
   }
 
   // tslint:disable-next-line: typedef
   handleDelete(id: number) {
-    const index = this.flashes.findIndex((flash) => Object.is(flash.id, id))
-    this.flashes.splice(index, 1)
+    this.FS.deleteFalsh(id)
   }
   // tslint:disable-next-line: typedef
   handleEdit(id: number) {
+    this.flash = this.FS.getFlash(id)
     this.editing = true
     this.editingId = id
-    const flash = this.flashes.find((flash) => Object.is(flash.id, id))
-    this.flash.question = flash.question
-    this.flash.answer = flash.answer
   }
   // tslint:disable-next-line: typedef
   handleRememberedChange({ id, flag }) {
@@ -80,11 +45,7 @@ export class AppComponent {
     flash.remembered = flag
   }
   handleSubmit(): void {
-    this.flashes.push({
-      id: getRandomNumber(),
-      show: false,
-      ...this.flash,
-    })
+    this.FS.addFlash(this.flash)
     this.handleClear()
   }
   // tslint:disable-next-line: typedef
@@ -99,12 +60,14 @@ export class AppComponent {
   handleCancel() {
     this.editing = false
     this.editingId = undefined
-    this.handleClear
+    this.handleClear()
   }
   handleUpdate() {
-    const flash = this.flashes.find((flash) => Object.is(flash.id, this.editingId))
-    flash.question = this.flash.question
-    flash.answer = this.flash.answer
+    this.FS.updateFlash(this.editingId, this.flash)
     this.handleCancel()
+  }
+
+  constructor(private FS: FlashService) {
+    this.flashes = this.FS.flashs
   }
 }
