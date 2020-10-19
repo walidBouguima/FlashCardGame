@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core'
 
 import { IFlash } from '../flash.model'
 
@@ -6,6 +13,7 @@ import { IFlash } from '../flash.model'
   selector: 'app-flash',
   templateUrl: './flash.component.html',
   styleUrls: ['./flash.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FlashComponent implements OnInit {
   // tslint:disable-next-line: no-output-on-prefix
