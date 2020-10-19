@@ -1,3 +1,4 @@
 <div class="flashes">
-  <app-flash></app-flash>
+  <app-flash *ngFor="let flash of flashes; trackBy: trackFlashById" [flash]="flash">
+  </app-flash>
 </div>
