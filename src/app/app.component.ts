@@ -46,7 +46,7 @@ export class AppComponent {
   // tslint:disable-next-line: typedef
   handleToggleCard(id: number) {
     // tslint:disable-next-line: no-shadowed-variable
-    const flash = this.flashes.find((flash) => flash.id === id)
+    const flash = this.flashes.find((flash) => Object.is(flash.id, id))
     flash.show = !flash.show
   }
 }
