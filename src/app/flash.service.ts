@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core'
+import { BehaviorSubject } from 'rxjs'
 
 import { IFlash } from './flash.model'
 
@@ -35,33 +36,64 @@ export class FlashService {
       id: getRandomNumber(),
     },
   ]
+
+  flashs$ = new BehaviorSubject<IFlash[]>(this.flashs)
+
   constructor() {}
 
   addFlash(flash: { question: string; answer: string }) {
-    this.flashs.push({
-      ...flash,
-      show: false,
-      id: getRandomNumber(),
-    })
+    this.flashs = [
+      ...this.flashs,
+      {
+        ...flash,
+        show: false,
+        id: getRandomNumber(),
+      },
+    ]
+    this.flashs$.next(this.flashs)
   }
   toggleFlash(id: number) {
-    const flash = this.flashs.find((flash) => flash.id === id)
-    flash.show = !flash.show
+    const index = this.flashs.findIndex((flash) => flash.id === id)
+    this.flashs = [
+      ...this.flashs.slice(0, index),
+      {
+        ...this.flashs[index],
+        show: !this.flashs[index].show,
+      },
+      ...this.flashs.slice(index + 1),
+    ]
+    this.flashs$.next(this.flashs)
   }
   deleteFalsh(id: number) {
     const index = this.flashs.findIndex((flash) => flash.id === id)
-    this.flashs.splice(index, 1)
+    this.flashs = [...this.flashs.slice(0, index), ...this.flashs.slice(index + 1)]
+    this.flashs$.next(this.flashs)
   }
 
   remeberedChange(id: number, flag: 'correct' | 'incorrect') {
-    const flash = this.flashs.find((flash) => flash.id === id)
-    flash.remembered = flag
+    const index = this.flashs.findIndex((flash) => flash.id === id)
+    this.flashs = [
+      ...this.flashs.slice(0, index),
+      {
+        ...this.flashs[index],
+        remembered: flag,
+      },
+      ...this.flashs.slice(index + 1),
+    ]
+    this.flashs$.next(this.flashs)
   }
 
   updateFlash(id, updateFlash: { question: string; answer: string }) {
-    const flash = this.flashs.find((flash) => flash.id === id)
-    flash.question = updateFlash.question
-    flash.answer = updateFlash.answer
+    const index = this.flashs.findIndex((flash) => flash.id === id)
+    this.flashs = [
+      ...this.flashs.slice(0, index),
+      {
+        ...this.flashs[index],
+        ...updateFlash,
+      },
+      ...this.flashs.slice(index + 1),
+    ]
+    this.flashs$.next(this.flashs)
   }
 
   getFlash(id: number) {
