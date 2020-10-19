@@ -39,7 +39,14 @@ export class AppComponent {
     },
   ]
 
+  // tslint:disable-next-line: typedef
   trackFlashById(flash) {
     return flash.id
+  }
+  // tslint:disable-next-line: typedef
+  handleToggleCard(id: number) {
+    // tslint:disable-next-line: no-shadowed-variable
+    const flash = this.flashes.find((flash) => flash.id === id)
+    flash.show = !flash.show
   }
 }
