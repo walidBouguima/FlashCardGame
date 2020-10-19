@@ -1,6 +1,8 @@
-import { Component, ViewChild } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { NgForm } from '@angular/forms'
+import { Observable } from 'rxjs'
 
+import { IFlash } from './flash.model'
 import { FlashService } from './flash.service'
 
 @Component({
@@ -8,7 +10,7 @@ import { FlashService } from './flash.service'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   @ViewChild('flashForm', { static: true }) flashForm: NgForm
   editing = false
   editingId: number
@@ -17,6 +19,7 @@ export class AppComponent {
     answer: '',
   }
   flashes
+  flash$: Observable<IFlash[]>
 
   // tslint:disable-next-line: typedef
   trackFlashById(flash) {
@@ -69,5 +72,8 @@ export class AppComponent {
 
   constructor(private FS: FlashService) {
     this.flashes = this.FS.flashs
+  }
+  ngOnInit() {
+    this.flash$ = this.FS.flashs$
   }
 }
