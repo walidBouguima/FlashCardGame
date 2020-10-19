@@ -47,6 +47,7 @@ export class AppComponent {
       id: getRandomNumber(),
     },
   ]
+  handle
 
   // tslint:disable-next-line: typedef
   trackFlashById(flash) {
@@ -68,6 +69,9 @@ export class AppComponent {
   handleEdit(id: number) {
     this.editing = true
     this.editingId = id
+    const flash = this.flashes.find((flash) => Object.is(flash.id, id))
+    this.flash.question = flash.question
+    this.flash.answer = flash.answer
   }
   // tslint:disable-next-line: typedef
   handleRememberedChange({ id, flag }) {
@@ -90,5 +94,17 @@ export class AppComponent {
       answer: '',
     }
     this.flashForm.reset()
+  }
+
+  handleCancel() {
+    this.editing = false
+    this.editingId = undefined
+    this.handleClear
+  }
+  handleUpdate() {
+    const flash = this.flashes.find((flash) => Object.is(flash.id, this.editingId))
+    flash.question = this.flash.question
+    flash.answer = this.flash.answer
+    this.handleCancel()
   }
 }
