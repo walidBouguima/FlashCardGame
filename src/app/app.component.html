@@ -17,11 +17,12 @@
     </div>
   </div>
   <button *ngIf="editing; else submitBtn" class="button is-primary" type="submit"
-    (click)="handleUpdate()">Update</button>
+    (click)="handleUpdate()" [disabled]="flashForm.invalid">Update</button>
   <ng-template #submitBtn>
-    <button class="button is-primary" type="submit"
-      (click)="handleSubmit()">Submit</button>
+    <button class="button is-primary" type="submit" (click)="handleSubmit()"
+      [disabled]="flashForm.invalid">Submit</button>
   </ng-template>
+  |
   <button *ngIf="editing; else clearBtn" class="button clear-btn"
     (click)="handleCancel()">Cancel</button>
   <ng-template #clearBtn>
