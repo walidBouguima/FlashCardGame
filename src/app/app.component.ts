@@ -62,7 +62,7 @@ export class AppComponent {
     this.editing = true
     this.editingId = id
   }
-  handleRememberedChange(id: number, flag) {
+  handleRememberedChange({ id, flag }) {
     const flash = this.flashes.find((flash) => Object.is(flash.id, id))
     flash.remembered = flag
   }

@@ -41,10 +41,16 @@ export class FlashComponent implements OnInit {
   }
   // tslint:disable-next-line: typedef
   markCorrect() {
-    this.onRememberedChange.emit({ id: this.flash.id, flag: 'correct' })
+    this.onRememberedChange.emit({
+      id: this.flash.id,
+      flag: 'correct',
+    })
   }
   // tslint:disable-next-line: typedef
   markIncorrect() {
-    this.onRememberedChange.emit({ id: this.flash.id, flag: 'Incorrect' })
+    this.onRememberedChange.emit({
+      id: this.flash.id,
+      flag: 'incorrect',
+    })
   }
 }
